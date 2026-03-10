@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-void: #050404;
+  /* Page background — almost black */
+  --color-ash: #0d0b0b;
+  /* Card backgrounds */
+  --color-stone: #1a1614;
+  /* Secondary surfaces */
+  --color-fog: #1c1410;
+  /* Sections */
+  --color-ember: #c8963e;
+  /* Primary gold — Elden Ring signature */
+  --color-grace: #f0c060;
+  /* Bright golden glow — Sites of Grace */
+  --color-rune: #e8a020;
+  /* Rune/accent gold */
+  --color-mist: rgba(200, 150, 62, 0.08);
+  /* Fog overlay */
+  --color-text-main: #d4c4a0;
+  /* Warm parchment text */
+  --color-text-dim: #7a6a50;
+  /* Dimmed/secondary text */
+  --color-blood: #6b1a1a;
+  /* Danger/accent red */
+  --color-soul: #4a7fa8;
+  /* Blue soul energy */
+
+  --glow-ember: 0 0 20px #c8963e, 0 0 60px rgba(200, 150, 62, 0.4), 0 0 100px rgba(200, 150, 62, 0.15);
+  --glow-grace: 0 0 30px #f0c060, 0 0 80px rgba(240, 192, 96, 0.5), 0 0 150px rgba(240, 192, 96, 0.2);
+  --glow-soul: 0 0 20px #4a7fa8, 0 0 60px rgba(74, 127, 168, 0.4);
+
+  --font-cinzel: 'Cinzel Decorative', serif;
+  --font-crimson: 'Crimson Pro', serif;
+  --font-jetbrains: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-void text-text-main font-crimson overflow-x-hidden selection:bg-ember/30 selection:text-grace;
+  }
+}
+
+@layer components {
+  .elden-title {
+    background: linear-gradient(135deg, #c8963e 0%, #f0c060 50%, #c8963e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px rgba(240, 192, 96, 0.6)) drop-shadow(0 0 60px rgba(200, 150, 62, 0.3));
+    font-family: var(--font-cinzel), serif;
+    letter-spacing: 0.15em;
+    padding-right: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .elden-button {
+    @apply relative px-8 py-3 bg-stone border border-ember/30 text-text-main font-cinzel tracking-[0.15em] uppercase transition-all duration-300 overflow-hidden;
+  }
+
+  .elden-button:hover {
+    @apply border-ember text-grace;
+    box-shadow: 0 0 20px rgba(200, 150, 62, 0.2), inset 0 0 10px rgba(200, 150, 62, 0.1);
+  }
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background: radial-gradient(circle at center, transparent 30%, rgba(5, 4, 4, 0.8) 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone);
+  border: 1px solid var(--color-ember);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ember);
+}
