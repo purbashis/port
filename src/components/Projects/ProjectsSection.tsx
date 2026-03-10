@@ -32,7 +32,7 @@ export default function ProjectsSection() {
 
                             <div className="flex-grow">
                                 <p className="font-crimson text-lg text-text-main italic leading-relaxed border-l border-ember/30 pl-4 py-2 bg-gradient-to-r from-ember/5 to-transparent">
-                                    "{project.description}"
+                                    &quot;{project.description}&quot;
                                 </p>
 
                                 <div className="mt-8">

@@ -17,7 +17,7 @@ export default function AboutSection() {
                             seasoned Tarnished of the digital realms, {RESUME.name} wanders the expanse of distributed systems and machine cognition. Bearing 2+ years of battle-hardened experience, he has forged production-grade LLM systems, summoned RAG pipelines of great power, and deployed them across the AWS cloud — a vast and unforgiving land.
                         </p>
                         <p className="font-crimson text-lg md:text-xl leading-relaxed text-text-dim mt-6 italic">
-                            "His code is forged in Python, tested in the fires of production, and polished with the precision of a master smith."
+                            &quot;His code is forged in Python, tested in the fires of production, and polished with the precision of a master smith.&quot;
                         </p>
                     </div>
 

@@ -39,7 +39,7 @@ export default function ContactSection() {
                         <div className="absolute bottom-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-ember/50 to-transparent" />
 
                         <p className="font-crimson text-xl md:text-2xl text-text-main italic mb-8 py-4 border-b border-stone leading-relaxed">
-                            "Ahh, a visitor. I've been expecting you. The realms of code are treacherous... shall we traverse them together?"
+                            &quot;Ahh, a visitor. I&apos;ve been expecting you. The realms of code are treacherous... shall we traverse them together?&quot;
                         </p>
 
                         <ul className="space-y-6 font-mono text-sm">
