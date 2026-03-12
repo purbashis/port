@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
@@ -39,9 +39,9 @@ function OrbScene() {
     const ring3Ref = useRef<THREE.Mesh>(null);
     const lightRef = useRef<THREE.PointLight>(null);
 
-    const uniformData = useMemo(() => ({
+    const uniforms = useMemo(() => ({
         uTime: { value: 0 },
-        uColor: { value: new THREE.Color("#d4c4a0") } // Matched to 'text-main'
+        uColor: { value: new THREE.Color("#f0c060") }
     }), []);
 
     useFrame((state) => {
@@ -49,7 +49,7 @@ function OrbScene() {
 
         if (orbRef.current) {
             orbRef.current.rotation.y = elapsed * 0.2;
-            uniformData.uTime.value = elapsed;
+            uniforms.uTime.value = elapsed;
         }
 
         if (ring1Ref.current) {
@@ -68,12 +68,13 @@ function OrbScene() {
         }
 
         if (lightRef.current) {
+            // Light flicker
             lightRef.current.intensity = 1.0 + Math.sin(elapsed * 4) * 0.4 + Math.sin(elapsed * 10) * 0.1;
         }
 
-        // Camera subtle panning - reduced to prevent clipping
-        state.camera.position.x = Math.sin(elapsed * 0.5) * 0.3;
-        state.camera.position.y = Math.cos(elapsed * 0.3) * 0.3;
+        // Camera subtle panning
+        state.camera.position.x = Math.sin(elapsed * 0.5) * 0.5;
+        state.camera.position.y = Math.cos(elapsed * 0.3) * 0.5;
         state.camera.lookAt(0, 0, 0);
     });
 
@@ -83,7 +84,7 @@ function OrbScene() {
             <mesh ref={orbRef}>
                 <sphereGeometry args={[1.5, 64, 64]} />
                 <shaderMaterial
-                    uniforms={uniformData}
+                    uniforms={uniforms}
                     vertexShader={vertexShader}
                     fragmentShader={fragmentShader}
                     transparent
@@ -95,22 +96,23 @@ function OrbScene() {
             {/* Rune Rings */}
             <mesh ref={ring1Ref}>
                 <torusGeometry args={[1.8, 0.02, 16, 100]} />
-                <meshBasicMaterial color="#d4c4a0" transparent opacity={0.6} blending={THREE.AdditiveBlending} depthWrite={false} />
+                <meshBasicMaterial color="#c8963e" transparent opacity={0.6} blending={THREE.AdditiveBlending} depthWrite={false} />
             </mesh>
 
             <mesh ref={ring2Ref} rotation={[Math.PI / 4, 0, 0]}>
                 <torusGeometry args={[2.2, 0.015, 16, 100]} />
-                <meshBasicMaterial color="#d4c4a0" transparent opacity={0.4} blending={THREE.AdditiveBlending} depthWrite={false} />
+                <meshBasicMaterial color="#f0c060" transparent opacity={0.5} blending={THREE.AdditiveBlending} depthWrite={false} />
             </mesh>
 
             <mesh ref={ring3Ref} rotation={[0, Math.PI / 3, 0]}>
-                <torusGeometry args={[2.2, 0.01, 16, 100]} />
-                <meshBasicMaterial color="#7a6a50" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} />
+                <torusGeometry args={[2.7, 0.01, 16, 100]} />
+                <meshBasicMaterial color="#e8a020" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} />
             </mesh>
 
-            <pointLight ref={lightRef} color="#d4c4a0" distance={20} intensity={1.5} />
-            <ambientLight intensity={0.2} color="#7a6a50" />
+            <pointLight ref={lightRef} color="#f0c060" distance={20} intensity={1.5} />
+            <ambientLight intensity={0.2} color="#c8963e" />
 
+            {/* Particle System internal to the hero */}
             <ParticleField count={150} />
         </group>
     );

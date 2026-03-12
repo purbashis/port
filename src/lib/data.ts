@@ -54,7 +54,7 @@ export const RESUME = {
             description: "Scalable RAG system for enterprise document search with hybrid semantic retrieval and 40% hallucination reduction.",
             tech: ["LangChain", "OpenAI", "FAISS", "FastAPI", "Docker", "AWS"],
             stat: "40% Hallucination Reduction",
-            link: "#",
+            link: "https://github.com/purbashis/enterprise-rag",
         },
         {
             title: "LLM-Powered Healthcare NLP System",
@@ -63,7 +63,7 @@ export const RESUME = {
             description: "NLP pipeline combining transformer embeddings with supervised ML classifiers for healthcare text analysis.",
             tech: ["Transformers", "Scikit-learn", "Python", "Clustering", "FastAPI"],
             stat: "91% Classification Accuracy",
-            link: "#",
+            link: "https://healthcarenlp.streamlit.app/",
         },
     ],
 
