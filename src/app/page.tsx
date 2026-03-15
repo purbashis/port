@@ -1,50 +1,28 @@
 "use client";
 
-import AboutSection from "@/components/About/AboutSection";
-import ContactSection from "@/components/Contact/ContactSection";
-import EducationSection from "@/components/Education/EducationSection";
-import ExperienceSection from "@/components/Experience/ExperienceSection";
-import Footer from "@/components/Footer/Footer";
-import HeroSection from "@/components/Hero/HeroSection";
-import LoadingScreen from "@/components/Loading/LoadingScreen";
-import Navbar from "@/components/Navigation/Navbar";
-import ProjectsSection from "@/components/Projects/ProjectsSection";
-import { ParticleField } from "@/components/shared/ParticleField";
-import SkillsSection from "@/components/Skills/SkillsSection";
-import { Canvas } from "@react-three/fiber";
-import { useState } from "react";
+import React, { useState } from 'react';
+import BootScreen from '@/components/OS/BootScreen';
+import Desktop from '@/components/OS/Desktop';
+import BackgroundParticles from '@/components/shared/BackgroundParticles';
 
-export default function Home() {
-    const [loading, setLoading] = useState(true);
+export default function PortfolioOS() {
+  const [booted, setBooted] = useState(false);
 
-    return (
-        <div id="top">
-            {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+  return (
+    <main className="relative w-screen h-screen bg-[#050508] overflow-hidden text-gray-100">
+      {/* Persistent particle background */}
+      <div className="absolute inset-0 z-0">
+        <BackgroundParticles />
+      </div>
 
-            {!loading && (
-                <>
-                    <Navbar />
-
-                    <main className="relative z-10">
-                        <HeroSection />
-                        <AboutSection />
-                        <SkillsSection />
-                        <ExperienceSection />
-                        <ProjectsSection />
-                        <EducationSection />
-                        <ContactSection />
-                    </main>
-
-                    <Footer />
-
-                    {/* Global Ambient Particles */}
-                    <div className="fixed inset-0 z-0 pointer-events-none">
-                        <Canvas camera={{ position: [0, 0, 10], fov: 75 }} gl={{ alpha: true }}>
-                            <ParticleField count={40} />
-                        </Canvas>
-                    </div>
-                </>
-            )}
-        </div>
-    );
+      {/* OS Boot → Desktop transition */}
+      <div className="relative z-10 w-full h-full">
+        {!booted ? (
+          <BootScreen onComplete={() => setBooted(true)} />
+        ) : (
+          <Desktop />
+        )}
+      </div>
+    </main>
+  );
 }

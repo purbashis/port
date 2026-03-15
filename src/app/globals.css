@@ -1,113 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-void: #050404;
-  /* Page background — almost black */
-  --color-ash: #0d0b0b;
-  /* Card backgrounds */
-  --color-stone: #1a1614;
-  /* Secondary surfaces */
-  --color-fog: #1c1410;
-  /* Sections */
-  --color-ember: #c8963e;
-  /* Primary gold — Elden Ring signature */
-  --color-grace: #f0c060;
-  /* Bright golden glow — Sites of Grace */
-  --color-rune: #e8a020;
-  /* Rune/accent gold */
-  --color-mist: rgba(200, 150, 62, 0.08);
-  /* Fog overlay */
-  --color-text-main: #d4c4a0;
-  /* Warm parchment text */
-  --color-text-dim: #7a6a50;
-  /* Dimmed/secondary text */
-  --color-blood: #6b1a1a;
-  /* Danger/accent red */
-  --color-soul: #4a7fa8;
-  /* Blue soul energy */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
-  --glow-ember: 0 0 20px #c8963e, 0 0 60px rgba(200, 150, 62, 0.4), 0 0 100px rgba(200, 150, 62, 0.15);
-  --glow-grace: 0 0 30px #f0c060, 0 0 80px rgba(240, 192, 96, 0.5), 0 0 150px rgba(240, 192, 96, 0.2);
-  --glow-soul: 0 0 20px #4a7fa8, 0 0 60px rgba(74, 127, 168, 0.4);
-
-  --font-cinzel: 'Cinzel Decorative', serif;
-  --font-crimson: 'Crimson Pro', serif;
-  --font-jetbrains: 'JetBrains Mono', monospace;
+  /* AI OS Core Palette */
+  --neon-cyan:    #00f0ff;
+  --neon-purple:  #b026ff;
+  --neon-green:   #00ff41;   /* hacker terminal green */
+  --dark-base:    #050508;
+  --dark-surface: #0a0a0f;
+  --dark-panel:   #0f0f18;
+  --border-dim:   rgba(255,255,255,0.08);
+  --border-glow:  rgba(0,240,255,0.35);
 }
 
 @layer base {
   body {
-    @apply bg-void text-text-main font-crimson overflow-x-hidden selection:bg-ember/30 selection:text-grace;
+    @apply bg-[#050508] text-gray-100 overflow-x-hidden;
+    font-family: var(--font-sans);
+  }
+  code, pre, kbd, samp, .font-mono {
+    font-family: var(--font-mono) !important;
+  }
+  a {
+    @apply text-blue-400 hover:text-[#00f0ff] transition-colors;
   }
 }
 
 @layer components {
-  .elden-title {
-    background: linear-gradient(135deg, #c8963e 0%, #f0c060 50%, #c8963e 100%);
+  .glass-panel {
+    @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)];
+  }
+  .glass-search {
+    @apply bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 
+           shadow-[0_4px_24px_rgba(0,240,255,0.08)] 
+           transition-all duration-500 
+           hover:shadow-[0_8px_32px_rgba(0,240,255,0.18)] 
+           focus-within:shadow-[0_8px_32px_rgba(176,38,255,0.25)] 
+           focus-within:border-purple-500/50;
+  }
+  .animated-gradient-text {
+    background: linear-gradient(90deg, #00f0ff, #b026ff, #00f0ff);
+    background-size: 200% auto;
+    color: transparent;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: none;
-    filter: drop-shadow(0 0 20px rgba(240, 192, 96, 0.6)) drop-shadow(0 0 60px rgba(200, 150, 62, 0.3));
-    font-family: var(--font-cinzel), serif;
-    letter-spacing: 0.15em;
-    padding-right: 0.15em;
-    text-transform: uppercase;
+    animation: shine 4s linear infinite;
   }
-
-  .elden-button {
-    @apply relative px-8 py-3 bg-stone border border-ember/30 text-text-main font-cinzel tracking-[0.15em] uppercase transition-all duration-300 overflow-hidden;
+  /* Hacker terminal text */
+  .terminal-text {
+    color: var(--neon-green);
+    font-family: var(--font-mono);
+    text-shadow: 0 0 8px rgba(0,255,65,0.6);
   }
-
-  .elden-button:hover {
-    @apply border-ember text-grace;
-    box-shadow: 0 0 20px rgba(200, 150, 62, 0.2), inset 0 0 10px rgba(200, 150, 62, 0.1);
+  .terminal-dim {
+    color: rgba(0,255,65,0.5);
+    font-family: var(--font-mono);
+  }
+  .neon-border-cyan {
+    border-color: rgba(0,240,255,0.4);
+    box-shadow: 0 0 12px rgba(0,240,255,0.2), inset 0 0 12px rgba(0,240,255,0.04);
+  }
+  .neon-border-purple {
+    border-color: rgba(176,38,255,0.4);
+    box-shadow: 0 0 12px rgba(176,38,255,0.2), inset 0 0 12px rgba(176,38,255,0.04);
   }
 }
 
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+@keyframes float {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  50%  { transform: translateY(-10px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+  50%       { box-shadow: 0 0 25px rgba(176, 38, 255, 0.6); }
+}
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
 }
 
-.vignette {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 40;
-  background: radial-gradient(circle at center, transparent 30%, rgba(5, 4, 4, 0.8) 100%);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Webkit Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-void);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-stone);
-  border: 1px solid var(--color-ember);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ember);
-}
+
