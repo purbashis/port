@@ -88,24 +88,68 @@ export default function FullDetailsApp() {
       </Section>
 
       {/* ── Technical Skills ── */}
-      <Section icon={Cpu} title="Technical Skills" color="#b026ff">
-        {[
-          { label: 'Languages', color: '#00f0ff', items: ['Python', 'GO', 'SQL', 'C++'] },
-          { label: 'ML & AI', color: '#b026ff', items: ['Large Language Models', 'RAG', 'LoRA Fine-tuning', 'Prompt Engineering', 'Clustering', 'Classification', 'Transformer Embeddings', 'Data Vectorization'] },
-          { label: 'Frameworks', color: '#ff6af0', items: ['LangChain', 'LangGraph', 'LlamaIndex', 'Hugging Face', 'FastAPI'] },
-          { label: 'Databases', color: '#00f0ff', items: ['PostgreSQL', 'FAISS', 'Chroma', 'Pinecone', 'Weaviate'] },
-          { label: 'Cloud & DevOps', color: '#b026ff', items: ['AWS (EC2, S3)', 'Docker', 'Kubernetes', 'GitHub Actions CI/CD'] },
-          { label: 'Systems', color: '#ff6af0', items: ['REST APIs', 'Microservices Architecture', 'Logging', 'Monitoring'] },
-        ].map(row => (
-          <div key={row.label} className="flex gap-3 mb-3 items-start">
-            <div className="text-[10px] font-bold flex-shrink-0 w-24 mt-0.5 uppercase tracking-wider" style={{ color: row.color, fontFamily: 'var(--font-mono)' }}>
-              {row.label}
+      <Section icon={Cpu} title="Technical Expertise" color="#b026ff">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+          {[
+            { 
+              category: 'AI & Machine Learning',
+              color: '#00f0ff',
+              skills: [
+                { name: 'LLMs & RAG', level: 95 },
+                { name: 'Fine-tuning (LoRA)', level: 88 },
+                { name: 'Vector DBs (FAISS)', level: 92 },
+                { name: 'NLP Transformers', level: 90 },
+              ]
+            },
+            { 
+              category: 'Engineering & Systems',
+              color: '#b026ff',
+              skills: [
+                { name: 'Python (Expert)', level: 96 },
+                { name: 'FastAPI / Microservices', level: 92 },
+                { name: 'AWS (Cloud)', level: 85 },
+                { name: 'Docker / CI/CD', level: 88 },
+              ]
+            }
+          ].map(cat => (
+            <div key={cat.category} className="space-y-4">
+              <h3 className="text-[10px] font-black tracking-widest uppercase opacity-50 mb-4" style={{ color: cat.color }}>{cat.category}</h3>
+              {cat.skills.map(skill => (
+                <div key={skill.name} className="space-y-1.5">
+                  <div className="flex justify-between items-center text-[11px]">
+                    <span className="font-semibold text-gray-300">{skill.name}</span>
+                    <span style={{ color: cat.color, fontFamily: 'var(--font-mono)' }}>{skill.level}%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${skill.level}%` }}
+                      transition={{ duration: 1.5, ease: 'easeOut', delay: 0.2 }}
+                      className="h-full rounded-full relative" 
+                      style={{ background: `linear-gradient(90deg, ${cat.color}80, ${cat.color})`, boxShadow: `0 0 10px ${cat.color}40` }}
+                    >
+                      <motion.div 
+                        animate={{ opacity: [0.4, 1, 0.4] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="absolute inset-0 bg-white/20"
+                      />
+                    </motion.div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex flex-wrap">
-              {row.items.map(i => <Badge key={i} text={i} color={row.color} />)}
-            </div>
+          ))}
+        </div>
+        
+        {/* Secondary Skills Tag Cloud */}
+        <div className="mt-8 pt-6 border-t border-white/5">
+          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-3">Additional Stack</div>
+          <div className="flex flex-wrap gap-2">
+            {['LangChain', 'LangGraph', 'LlamaIndex', 'HuggingFace', 'PostgreSQL', 'GO', 'SQL', 'Kubernetes', 'REST APIs', 'Monitoring'].map(s => (
+              <Badge key={s} text={s} color="#ff6af0" />
+            ))}
           </div>
-        ))}
+        </div>
       </Section>
 
       {/* ── Experience ── */}

@@ -122,48 +122,74 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
-            className="w-80 rounded-2xl overflow-hidden flex flex-col border border-white/10"
-            style={{ maxHeight: 520, background: '#06060e', boxShadow: '0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,240,255,0.08)' }}
+            className="w-80 rounded-2xl overflow-hidden flex flex-col border border-white/10 relative"
+            style={{ 
+              maxHeight: 520, 
+              background: 'rgba(6, 6, 14, 0.75)', 
+              backdropFilter: 'blur(32px)',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,240,255,0.03)' 
+            }}
           >
+            {/* Neural Web Background Pattern */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ 
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f0ff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            }} />
+
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 flex-shrink-0"
-              style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.08), rgba(176,38,255,0.08))' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 flex-shrink-0 relative z-10"
+              style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.12), rgba(176,38,255,0.12))' }}>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00f0ff]/30 to-[#b026ff]/30 border border-[#00f0ff]/40 flex items-center justify-center">
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00f0ff]/30 to-[#b026ff]/30 border border-[#00f0ff]/40 flex items-center justify-center">
                   <Cpu size={15} className="text-[#00f0ff]" />
-                </div>
+                </motion.div>
                 <div>
-                  <div className="text-sm font-bold text-white" style={{ fontFamily: 'var(--font-sans)' }}>Purbashis AI</div>
+                  <div className="text-sm font-bold text-white tracking-tight" style={{ fontFamily: 'var(--font-sans)' }}>Purbashis AI</div>
                   <div className="text-[10px] text-[#00f0ff] flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] animate-pulse inline-block" />
-                    Online · Powered by RAG
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41] animate-pulse inline-block" />
+                    Neural Core Online
                   </div>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)}>
-                <X size={14} className="text-gray-500 hover:text-white transition-colors" />
+              <button onClick={() => setOpen(false)} className="p-1 hover:bg-white/5 rounded-lg transition-colors">
+                <X size={14} className="text-gray-500 hover:text-white" />
               </button>
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-3 space-y-3">
               {messages.map((m, i) => (
-                <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                <motion.div 
+                  initial={{ opacity: 0, x: m.role === 'ai' ? -10 : 10, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  key={i} 
+                  className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'} relative z-10`}
+                >
                   {/* Avatar */}
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === 'ai' ? 'bg-gradient-to-tr from-[#00f0ff]/20 to-[#b026ff]/20 border border-[#00f0ff]/30' : 'bg-[#b026ff]/20 border border-[#b026ff]/40'}`}>
                     {m.role === 'ai' ? <Bot size={13} className="text-[#00f0ff]" /> : <User size={13} className="text-[#b026ff]" />}
                   </div>
                   {/* Bubble */}
                   <div
-                    className="max-w-[80%] px-3 py-2 rounded-xl text-[11px] leading-relaxed whitespace-pre-line"
+                    className="max-w-[85%] px-3.5 py-2.5 rounded-2xl text-[11px] leading-relaxed whitespace-pre-line relative overflow-hidden group"
                     style={m.role === 'ai'
-                      ? { background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.12)', color: '#d1d5db', fontFamily: 'var(--font-sans)' }
-                      : { background: 'rgba(176,38,255,0.12)', border: '1px solid rgba(176,38,255,0.2)', color: '#e5e7eb', fontFamily: 'var(--font-sans)' }
+                      ? { background: 'rgba(0,240,255,0.07)', border: '1px solid rgba(0,240,255,0.15)', color: '#d1d5db', fontFamily: 'var(--font-sans)', boxShadow: 'inset 0 0 12px rgba(0,240,255,0.03)' }
+                      : { background: 'rgba(176,38,255,0.12)', border: '1px solid rgba(176,38,255,0.25)', color: '#e5e7eb', fontFamily: 'var(--font-sans)' }
                     }
                   >
+                    {m.role === 'ai' && (
+                      <motion.div 
+                        initial={{ x: '-100%' }}
+                        animate={{ x: '200%' }}
+                        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3, ease: 'linear' }}
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12"
+                      />
+                    )}
                     {m.role === 'ai' ? renderText(m.text) : m.text}
                   </div>
-                </div>
+                </motion.div>
               ))}
 
               {isTyping && (
@@ -233,21 +259,30 @@ export default function AIAssistant() {
         )}
         <motion.button
           onClick={() => { setOpen(o => !o); setTimeout(() => inputRef.current?.focus(), 200); }}
-          whileHover={{ scale: 1.12 }}
-          whileTap={{ scale: 0.93 }}
-          className="w-16 h-16 rounded-full flex flex-col items-center justify-center gap-0.5 relative z-10"
+          whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+          whileTap={{ scale: 0.92 }}
+          className="w-16 h-16 rounded-full flex flex-col items-center justify-center gap-0.5 relative z-10 overflow-hidden"
           style={{
             background: open
               ? 'linear-gradient(135deg, #00f0ff, #b026ff)'
-              : 'linear-gradient(135deg, rgba(0,240,255,0.35), rgba(176,38,255,0.5))',
-            border: '2px solid rgba(176,38,255,0.7)',
+              : 'linear-gradient(135deg, rgba(10, 10, 30, 0.8), rgba(20, 10, 40, 0.8))',
+            border: '2px solid rgba(0, 240, 255, 0.4)',
             boxShadow: open
-              ? '0 0 40px rgba(0,240,255,0.6), 0 0 80px rgba(176,38,255,0.4)'
-              : '0 0 24px rgba(176,38,255,0.7), 0 0 48px rgba(0,240,255,0.25)',
+              ? '0 0 50px rgba(0,240,255,0.7), 0 0 100px rgba(176,38,255,0.5), inset 0 0 20px rgba(255,255,255,0.3)'
+              : '0 0 30px rgba(0,240,255,0.3), 0 0 60px rgba(176,38,255,0.15), inset 0 0 10px rgba(0,240,255,0.1)',
+            backdropFilter: 'blur(12px)'
           }}
         >
-          <Sparkles size={24} className="text-white" style={{ filter: 'drop-shadow(0 0 6px #fff)' }} />
-          <span className="text-[9px] font-bold text-white/80 tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>AI</span>
+          {!open && (
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-tr from-[#00f0ff]/10 to-[#b026ff]/10"
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+          )}
+          <circle cx="8" cy="8" r="8" fill="red" />
+          <Sparkles size={ open ? 24 : 26 } className="text-white relative z-10" style={{ filter: 'drop-shadow(0 0 8px #fff)' }} />
+          {!open && <span className="text-[9px] font-black text-[#00f0ff] tracking-[0.2em] relative z-10" style={{ fontFamily: 'var(--font-mono)' }}>AI</span>}
         </motion.button>
       </div>
     </div>
