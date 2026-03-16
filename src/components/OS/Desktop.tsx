@@ -23,6 +23,7 @@ import ResumeApp from './Apps/ResumeApp';
 import SkillsApp from './Apps/SkillsApp';
 import TerminalApp from './Apps/TerminalApp';
 import Window from './Window';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 // ── App Registry ──────────────────────────────────────────────────────────
 type AppId = 'projects' | 'ai' | 'experience' | 'skills' | 'resume' | 'contact' | 'terminal' | 'fulldetails';
@@ -115,36 +116,43 @@ function reducer(state: WinState[], action: Action): WinState[] {
 
 // ── Animated Background ──────────────────────────────────────────────────
 function DesktopBackground() {
+  const isMobile = useIsMobile();
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 100% 70% at 50% 10%, #080018 0%, #040412 55%, #000 100%)' }} />
+      <div className="absolute inset-0" style={{ background: isMobile ? '#020205' : 'radial-gradient(ellipse 100% 70% at 50% 10%, #080018 0%, #040412 55%, #000 100%)' }} />
 
-      {/* Animated orbs */}
-      <motion.div className="absolute rounded-full"
-        style={{ width: 800, height: 800, top: -300, left: -250, background: 'radial-gradient(circle, rgba(0,240,255,0.14) 0%, transparent 70%)', filter: 'blur(60px)' }}
-        animate={{ x: [0, 80, 0], y: [0, 50, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} />
-      <motion.div className="absolute rounded-full"
-        style={{ width: 700, height: 700, bottom: -200, right: -200, background: 'radial-gradient(circle, rgba(176,38,255,0.16) 0%, transparent 70%)', filter: 'blur(60px)' }}
-        animate={{ x: [0, -60, 0], y: [0, -70, 0] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }} />
-      <motion.div className="absolute rounded-full"
-        style={{ width: 500, height: 500, top: '30%', right: '20%', background: 'radial-gradient(circle, rgba(240,192,64,0.07) 0%, transparent 70%)', filter: 'blur(40px)' }}
-        animate={{ x: [0, 60, -40, 0], y: [0, -50, 40, 0] }} transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 8 }} />
+      {/* Animated orbs - simplified/disabled for mobile performance */}
+      {!isMobile && (
+        <>
+          <motion.div className="absolute rounded-full"
+            style={{ width: 800, height: 800, top: -300, left: -250, background: 'radial-gradient(circle, rgba(0,240,255,0.14) 0%, transparent 70%)', filter: 'blur(60px)' }}
+            animate={{ x: [0, 80, 0], y: [0, 50, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.div className="absolute rounded-full"
+            style={{ width: 700, height: 700, bottom: -200, right: -200, background: 'radial-gradient(circle, rgba(176,38,255,0.16) 0%, transparent 70%)', filter: 'blur(60px)' }}
+            animate={{ x: [0, -60, 0], y: [0, -70, 0] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }} />
+          <motion.div className="absolute rounded-full"
+            style={{ width: 500, height: 500, top: '30%', right: '20%', background: 'radial-gradient(circle, rgba(240,192,64,0.07) 0%, transparent 70%)', filter: 'blur(40px)' }}
+            animate={{ x: [0, 60, -40, 0], y: [0, -50, 40, 0] }} transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 8 }} />
+        </>
+      )}
 
-      {/* Grid */}
-      <div className="absolute inset-0" style={{
-        opacity: 0.03,
-        backgroundImage: 'linear-gradient(rgba(0,240,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,1) 1px,transparent 1px)',
-        backgroundSize: '65px 65px',
-      }} />
+      {/* Grid - invisible on mobile for performance */}
+      {!isMobile && (
+        <div className="absolute inset-0" style={{
+          opacity: 0.03,
+          backgroundImage: 'linear-gradient(rgba(0,240,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,1) 1px,transparent 1px)',
+          backgroundSize: '65px 65px',
+        }} />
+      )}
       {/* Horizon line */}
-      <div className="absolute left-0 right-0" style={{ top: '38%', height: 1, background: 'linear-gradient(90deg,transparent,rgba(0,240,255,0.15),rgba(176,38,255,0.15),transparent)' }} />
+      <div className="absolute left-0 right-0" style={{ top: '38%', height: 1, background: 'linear-gradient(90deg,transparent,rgba(0,240,255,0.15),rgba(176,38,255,0.15),transparent)', opacity: isMobile ? 0.3 : 1 }} />
 
       {/* Corner brackets */}
       {([
-        { pos: { top: 44,    left:  100 } as React.CSSProperties, bt: true,  bb: false, bl: true,  br: false },
-        { pos: { top: 44,    right:  16 } as React.CSSProperties, bt: true,  bb: false, bl: false, br: true  },
-        { pos: { bottom: 56, left:  100 } as React.CSSProperties, bt: false, bb: true,  bl: true,  br: false },
-        { pos: { bottom: 56, right:  16 } as React.CSSProperties, bt: false, bb: true,  bl: false, br: true  },
+        { pos: { top: isMobile ? 55 : 44, left: isMobile ? 12 : 100 } as React.CSSProperties, bt: true,  bb: false, bl: true,  br: false },
+        { pos: { top: isMobile ? 55 : 44, right: 16 } as React.CSSProperties, bt: true,  bb: false, bl: false, br: true  },
+        { pos: { bottom: 56, left: isMobile ? 12 : 100 } as React.CSSProperties, bt: false, bb: true,  bl: true,  br: false },
+        { pos: { bottom: 56, right: 16 } as React.CSSProperties, bt: false, bb: true,  bl: false, br: true  },
       ] as const).map((c, i) => (
         <div key={i} className="absolute w-6 h-6 opacity-25" style={{
           ...c.pos,
@@ -160,6 +168,7 @@ function DesktopBackground() {
 
 // ── Desktop ───────────────────────────────────────────────────────────────
 export default function Desktop() {
+  const isMobile = useIsMobile();
   const [windows, dispatch] = useReducer(reducer, []);
   const [clock, setClock] = useState('');
 
@@ -178,38 +187,40 @@ export default function Desktop() {
   const taskbarApps = APPS.filter(a => windows.find(w => w.id === a.id));
 
   return (
-    <div className="w-full h-screen flex flex-col overflow-hidden" style={{ fontFamily: 'var(--font-sans)' }}>
+    <div className="w-full h-screen flex flex-col overflow-hidden select-none" style={{ fontFamily: 'var(--font-sans)' }}>
 
       {/* ── Top Bar ──────────────────────────────────────── */}
-      <div className="h-11 flex items-center justify-between px-5 flex-shrink-0 z-50 relative"
-        style={{ background: 'linear-gradient(90deg,rgba(0,240,255,0.07),rgba(5,5,18,0.95),rgba(176,38,255,0.07))', borderBottom: '1px solid rgba(0,240,255,0.14)', backdropFilter: 'blur(24px)' }}>
+      <div className="h-11 flex items-center justify-between px-4 flex-shrink-0 z-50 relative"
+        style={{ background: 'rgba(5,5,18,0.92)', borderBottom: '1px solid rgba(0,240,255,0.14)', backdropFilter: isMobile ? 'none' : 'blur(24px)' }}>
 
         {/* Left */}
         <div className="flex items-center gap-3">
-          <div className="flex gap-1.5">
-            {['#ff5f57', '#febc2e', '#28c840'].map(c => <div key={c} className="w-3 h-3 rounded-full" style={{ background: c, boxShadow: `0 0 6px ${c}80` }} />)}
-          </div>
-          <span className="text-sm font-black tracking-[0.18em]"
+          {!isMobile && (
+            <div className="flex gap-1.5">
+              {['#ff5f57', '#febc2e', '#28c840'].map(c => <div key={c} className="w-3 h-3 rounded-full" style={{ background: c, boxShadow: `0 0 6px ${c}80` }} />)}
+            </div>
+          )}
+          <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-black tracking-[0.18em]`}
             style={{ fontFamily: 'var(--font-mono)', background: 'linear-gradient(90deg,#00f0ff,#b026ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            PURBASHIS OS v1.0
+            {isMobile ? 'PURBASHIS OS' : 'PURBASHIS OS v1.0'}
           </span>
         </div>
 
-        {/* Center */}
-        <div className="flex items-center gap-2 text-[10px]" style={{ fontFamily: 'var(--font-mono)' }}>
-          {[
-            { label: '● ONLINE', bg: 'rgba(0,255,65,0.12)', border: 'rgba(0,255,65,0.35)', color: '#00ff41' },
-            { label: 'AI Core: Active', bg: 'rgba(0,240,255,0.07)', border: 'rgba(0,240,255,0.25)', color: 'rgba(0,240,255,0.8)' },
-            { label: 'RAG: Online', bg: 'rgba(176,38,255,0.07)', border: 'rgba(176,38,255,0.25)', color: 'rgba(176,38,255,0.8)' },
-          ].map(pill => (
-            <span key={pill.label} className="px-2.5 py-1 rounded-full" style={{ background: pill.bg, border: `1px solid ${pill.border}`, color: pill.color }}>
-              {pill.label}
-            </span>
-          ))}
-        </div>
+        {/* Center - hidden on mobile */}
+        {!isMobile && (
+          <div className="flex items-center gap-2 text-[10px]" style={{ fontFamily: 'var(--font-mono)' }}>
+            {[
+              { label: '● ONLINE', bg: 'rgba(0,255,65,0.12)', border: 'rgba(0,255,65,0.35)', color: '#00ff41' },
+            ].map(pill => (
+              <span key={pill.label} className="px-2.5 py-1 rounded-full" style={{ background: pill.bg, border: `1px solid ${pill.border}`, color: pill.color }}>
+                {pill.label}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Right - clock */}
-        <div suppressHydrationWarning className="text-xs px-3 py-1.5 rounded-full font-mono"
+        <div suppressHydrationWarning className="text-[10px] px-3 py-1.5 rounded-full font-mono"
           style={{ fontFamily: 'var(--font-mono)', color: 'rgba(0,240,255,0.6)', background: 'rgba(0,240,255,0.07)', border: '1px solid rgba(0,240,255,0.15)' }}>
           {clock}
         </div>
@@ -219,10 +230,10 @@ export default function Desktop() {
       <div className="relative flex-1 overflow-hidden">
         <DesktopBackground />
 
-        {/* Watermark */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 select-none" style={{ paddingLeft: 100 }}>
+        {/* Watermark - adjusted for mobile */}
+        <div className={`absolute inset-0 flex items-center justify-center pointer-events-none z-0 select-none ${isMobile ? 'px-6' : 'pl-[100px]'}`}>
           <div className="text-center">
-            <div className="text-[clamp(3rem,9vw,8rem)] font-black tracking-tighter leading-none"
+            <div className={`font-black tracking-tighter leading-none ${isMobile ? 'text-[4.5rem]' : 'text-[clamp(3rem,9vw,8rem)]'}`}
               style={{ background: 'linear-gradient(135deg,rgba(0,240,255,0.06),rgba(176,38,255,0.05))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               PURBASHIS
             </div>
@@ -232,51 +243,54 @@ export default function Desktop() {
           </div>
         </div>
 
-        {/* ── Icon Sidebar ──────────────────────────────── */}
-        <div className="absolute top-0 bottom-0 left-0 flex flex-col items-center justify-center gap-1 py-4 z-10"
-          style={{ width: 96, background: 'linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.2),rgba(0,0,0,0.35))', backdropFilter: 'blur(16px)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+        {/* ── Icon Area (Sidebar vs Grid) ────────────────── */}
+        <div className={isMobile 
+          ? "absolute top-11 bottom-12 left-0 right-0 p-6 z-10 grid grid-cols-3 gap-4 content-start overflow-y-auto"
+          : "absolute top-0 bottom-0 left-0 flex flex-col items-center justify-center gap-1 py-4 z-10 w-[96px]"
+        }
+          style={{ 
+            background: isMobile ? 'transparent' : 'linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.2),rgba(0,0,0,0.35))', 
+            backdropFilter: isMobile ? 'none' : 'blur(16px)', 
+            borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)' 
+          }}>
 
           {APPS.map((app, i) => {
             const isOpen = !!windows.find(w => w.id === app.id);
             return (
               <motion.button key={app.id} onClick={() => open(app.id)}
-                className="flex flex-col items-center gap-1 w-full py-2.5 px-1.5 group relative cursor-pointer"
-                whileHover={{ scale: 1.08, x: 3 }}
+                className={`flex flex-col items-center gap-1 group relative cursor-pointer ${isMobile ? 'w-full' : 'w-full py-2.5 px-1.5'}`}
+                whileHover={isMobile ? {} : { scale: 1.08, x: 3 }}
                 whileTap={{ scale: 0.94 }}
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : -24, y: isMobile ? 20 : 0 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.3 }}
               >
-                {/* Active indicator bar */}
-                {isOpen && (
+                {/* Active indicator bar - Desktop only */}
+                {!isMobile && isOpen && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-8 rounded-r-full"
                     style={{ background: app.color, boxShadow: `0 0 8px ${app.color}` }} />
                 )}
 
                 {/* Icon box */}
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center relative transition-all duration-250"
-                  style={{ background: app.gradient, border: `1px solid ${app.color}35` }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.boxShadow = `0 0 22px ${app.glow}, inset 0 0 14px ${app.color}12`;
-                    el.style.borderColor = `${app.color}70`;
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.boxShadow = 'none';
-                    el.style.borderColor = `${app.color}35`;
+                <div className={`${isMobile ? 'w-16 h-16' : 'w-12 h-12'} rounded-2xl flex items-center justify-center relative transition-all duration-250`}
+                  style={{ 
+                    background: app.gradient, 
+                    border: `1px solid ${app.color}${isMobile ? '45' : '35'}`,
+                    boxShadow: isMobile && isOpen ? `0 0 15px ${app.glow}` : 'none'
                   }}>
-                  <app.icon size={22} style={{ color: app.color, filter: `drop-shadow(0 0 5px ${app.color})` }} />
+                  <app.icon size={isMobile ? 28 : 22} style={{ color: app.color, filter: `drop-shadow(0 0 5px ${app.color})` }} />
                 </div>
 
                 {/* Labels */}
-                <span className="text-[9px] font-semibold tracking-wide text-center leading-tight"
-                  style={{ color: app.color, opacity: isOpen ? 1 : 0.65, fontFamily: 'var(--font-sans)' }}>
+                <span className={`${isMobile ? 'text-[10px]' : 'text-[9px]'} font-semibold tracking-wide text-center leading-tight`}
+                  style={{ color: app.color, opacity: (isOpen || isMobile) ? 1 : 0.65, fontFamily: 'var(--font-sans)' }}>
                   {app.label}
                 </span>
-                <span className="text-[8px] text-center" style={{ color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono)' }}>
-                  {app.sublabel}
-                </span>
+                {!isMobile && (
+                  <span className="text-[8px] text-center" style={{ color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono)' }}>
+                    {app.sublabel}
+                  </span>
+                )}
               </motion.button>
             );
           })}
@@ -284,8 +298,13 @@ export default function Desktop() {
 
         {/* ── Windows ──────────────────────────────────── */}
         <AnimatePresence>
-          {windows.map(ws => {
+          {windows.map((ws, _i, arr) => {
             if (ws.minimized) return null;
+            // On mobile, only show the top-most unminimized window to prevent clipping and performance issues
+            const unminimizedWindows = arr.filter(w => !w.minimized);
+            const maxZ = unminimizedWindows.length > 0 ? Math.max(...unminimizedWindows.map(w => w.zIndex)) : -1;
+            if (isMobile && ws.zIndex < maxZ) return null;
+
             const def = APPS.find(a => a.id === ws.id)!;
             return (
               <Window key={ws.id} title={def.label} defaultPos={def.defaultPos}
@@ -303,26 +322,35 @@ export default function Desktop() {
 
       {/* ── Taskbar ──────────────────────────────────── */}
       <div className="h-12 flex items-center gap-2 px-4 flex-shrink-0 z-50 overflow-x-auto"
-        style={{ background: 'linear-gradient(90deg,rgba(0,0,0,0.75),rgba(4,4,18,0.88),rgba(0,0,0,0.75))', borderTop: '1px solid rgba(0,240,255,0.1)', backdropFilter: 'blur(24px)' }}>
-        <span className="text-[9px] mr-2 flex-shrink-0" style={{ color: 'rgba(0,240,255,0.3)', fontFamily: 'var(--font-mono)' }}>▸ ACTIVE</span>
+        style={{ background: 'rgba(4,4,18,0.95)', borderTop: '1px solid rgba(0,240,255,0.1)', backdropFilter: isMobile ? 'none' : 'blur(24px)' }}>
+        {!isMobile && <span className="text-[9px] mr-2 flex-shrink-0" style={{ color: 'rgba(0,240,255,0.3)', fontFamily: 'var(--font-mono)' }}>▸ ACTIVE</span>}
+        
         {taskbarApps.length === 0 ? (
-          <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>Click an icon to launch an app</span>
+          <span className="text-[10px] opacity-40 ml-2" style={{ fontFamily: 'var(--font-mono)' }}>
+            {isMobile ? 'OS Ready' : 'Click an icon to launch an app'}
+          </span>
         ) : (
           taskbarApps.map(app => {
             const ws = windows.find(w => w.id === app.id)!;
             return (
               <motion.button key={app.id} onClick={() => ws.minimized ? open(app.id) : minimize(app.id)}
                 whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] flex-shrink-0 transition-all"
-                style={{ background: ws.minimized ? 'rgba(255,255,255,0.04)' : `${app.color}14`, border: `1px solid ${ws.minimized ? 'rgba(255,255,255,0.08)' : app.color + '42'}`, color: ws.minimized ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-sans)' }}>
-                <app.icon size={12} style={{ color: app.color, filter: `drop-shadow(0 0 4px ${app.color})` }} />
-                {app.label}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] flex-shrink-0 transition-all font-medium"
+                style={{ 
+                  background: ws.minimized ? 'rgba(255,255,255,0.04)' : `${app.color}14`, 
+                  border: `1px solid ${ws.minimized ? 'rgba(255,255,255,0.08)' : app.color + '42'}`, 
+                  color: ws.minimized ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.85)', 
+                  fontFamily: 'var(--font-sans)' 
+                }}>
+                <app.icon size={12} style={{ color: app.color }} />
+                {!isMobile && app.label}
               </motion.button>
             );
           })
         )}
-        <div className="ml-auto flex-shrink-0 text-[9px]" style={{ color: 'rgba(0,240,255,0.3)', fontFamily: 'var(--font-mono)' }}>
-          Python · LLMs · RAG · AWS
+        
+        <div className="ml-auto flex-shrink-0 text-[10px] font-mono" style={{ color: 'rgba(0,240,255,0.3)' }}>
+          {isMobile ? 'PB' : 'Python · LLMs · RAG · AWS'}
         </div>
       </div>
     </div>
