@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bot, Cpu, Send, Sparkles, User, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 type Role = 'user' | 'ai';
 interface Msg { role: Role; text: string; typing?: boolean }
@@ -75,6 +76,7 @@ const SUGGESTIONS = [
 ];
 
 export default function AIAssistant() {
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
     { role: 'ai', text: `**Purbashis AI** online 🚀\n\nI'm an AI assistant built from Purbashis's portfolio data. Ask me anything about his work, skills, or projects!` },
@@ -95,14 +97,12 @@ export default function AIAssistant() {
     setInput('');
     setIsTyping(true);
 
-    // Simulate realistic AI "thinking" delay
     setTimeout(() => {
       setIsTyping(false);
       setMessages(prev => [...prev, { role: 'ai', text: getReply(q) }]);
     }, 800 + Math.random() * 600);
   };
 
-  // Render text with **bold** markdown
   const renderText = (text: string) => {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, i) =>
@@ -113,73 +113,73 @@ export default function AIAssistant() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[200] flex flex-col items-end gap-3">
+    <div className={`fixed ${isMobile ? 'bottom-4 right-4' : 'bottom-6 right-6'} z-[200] flex flex-col items-end gap-3`}>
       {/* Chat Panel */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            initial={isMobile ? { opacity: 0, y: 100 } : { opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            exit={isMobile ? { opacity: 0, y: 100 } : { opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
-            className="w-80 rounded-2xl overflow-hidden flex flex-col border border-white/10 relative"
+            className={`${isMobile ? 'fixed inset-0 rounded-none' : 'w-80 rounded-2xl'} overflow-hidden flex flex-col border border-white/10 relative`}
             style={{ 
-              maxHeight: 520, 
-              background: 'rgba(6, 6, 14, 0.75)', 
-              backdropFilter: 'blur(32px)',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,240,255,0.03)' 
+              maxHeight: isMobile ? '100%' : 520, 
+              background: isMobile ? '#06060e' : 'rgba(6, 6, 14, 0.75)', 
+              backdropFilter: isMobile ? 'none' : 'blur(32px)',
+              boxShadow: isMobile ? 'none' : '0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,240,255,0.03)' 
             }}
           >
-            {/* Neural Web Background Pattern */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ 
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f0ff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-            }} />
+            {/* Neural Web Background - Hidden on mobile for performance */}
+            {!isMobile && (
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ 
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f0ff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+              }} />
+            )}
 
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 flex-shrink-0 relative z-10"
+            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 flex-shrink-0 relative z-10"
               style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.12), rgba(176,38,255,0.12))' }}>
               <div className="flex items-center gap-2">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                  className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00f0ff]/30 to-[#b026ff]/30 border border-[#00f0ff]/40 flex items-center justify-center">
-                  <Cpu size={15} className="text-[#00f0ff]" />
+                  className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00f0ff]/30 to-[#b026ff]/30 border border-[#00f0ff]/40 flex items-center justify-center">
+                  <Cpu size={18} className="text-[#00f0ff]" />
                 </motion.div>
                 <div>
                   <div className="text-sm font-bold text-white tracking-tight" style={{ fontFamily: 'var(--font-sans)' }}>Purbashis AI</div>
                   <div className="text-[10px] text-[#00f0ff] flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41] animate-pulse inline-block" />
-                    Neural Core Online
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41]" />
+                    Online
                   </div>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="p-1 hover:bg-white/5 rounded-lg transition-colors">
-                <X size={14} className="text-gray-500 hover:text-white" />
+              <button onClick={() => setOpen(false)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+                <X size={20} className="text-gray-400" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((m, i) => (
                 <motion.div 
-                  initial={{ opacity: 0, x: m.role === 'ai' ? -10 : 10, scale: 0.95 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   key={i} 
-                  className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'} relative z-10`}
+                  className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'} relative z-10`}
                 >
-                  {/* Avatar */}
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === 'ai' ? 'bg-gradient-to-tr from-[#00f0ff]/20 to-[#b026ff]/20 border border-[#00f0ff]/30' : 'bg-[#b026ff]/20 border border-[#b026ff]/40'}`}>
-                    {m.role === 'ai' ? <Bot size={13} className="text-[#00f0ff]" /> : <User size={13} className="text-[#b026ff]" />}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === 'ai' ? 'bg-[#00f0ff]/20 border border-[#00f0ff]/30' : 'bg-[#b026ff]/20 border border-[#b026ff]/40'}`}>
+                    {m.role === 'ai' ? <Bot size={15} className="text-[#00f0ff]" /> : <User size={15} className="text-[#b026ff]" />}
                   </div>
-                  {/* Bubble */}
                   <div
-                    className="max-w-[85%] px-3.5 py-2.5 rounded-2xl text-[11px] leading-relaxed whitespace-pre-line relative overflow-hidden group"
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl text-[13px] leading-relaxed whitespace-pre-line relative overflow-hidden ${m.role === 'ai' ? 'rounded-tl-none' : 'rounded-tr-none'}`}
                     style={m.role === 'ai'
-                      ? { background: 'rgba(0,240,255,0.07)', border: '1px solid rgba(0,240,255,0.15)', color: '#d1d5db', fontFamily: 'var(--font-sans)', boxShadow: 'inset 0 0 12px rgba(0,240,255,0.03)' }
-                      : { background: 'rgba(176,38,255,0.12)', border: '1px solid rgba(176,38,255,0.25)', color: '#e5e7eb', fontFamily: 'var(--font-sans)' }
+                      ? { background: 'rgba(0,240,255,0.08)', border: '1px solid rgba(0,240,255,0.15)', color: '#e5e7eb' }
+                      : { background: 'rgba(176,38,255,0.15)', border: '1px solid rgba(176,38,255,0.25)', color: '#fff' }
                     }
                   >
-                    {m.role === 'ai' && (
+                    {!isMobile && m.role === 'ai' && (
                       <motion.div 
                         initial={{ x: '-100%' }}
                         animate={{ x: '200%' }}
@@ -193,27 +193,26 @@ export default function AIAssistant() {
               ))}
 
               {isTyping && (
-                <div className="flex gap-2">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#00f0ff]/20 to-[#b026ff]/20 border border-[#00f0ff]/30 flex items-center justify-center">
-                    <Bot size={13} className="text-[#00f0ff]" />
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/30 flex items-center justify-center">
+                    <Bot size={15} className="text-[#00f0ff]" />
                   </div>
-                  <div className="px-2 py-1 rounded-xl" style={{ background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.12)' }}>
+                  <div className="px-3 py-2 rounded-xl bg-[#00f0ff]/10 border border-[#00f0ff]/20">
                     <TypingBubble />
                   </div>
                 </div>
               )}
-
               <div ref={bottomRef} />
             </div>
 
             {/* Suggestions */}
-            {messages.length < 3 && (
-              <div className="flex flex-wrap gap-1.5 px-3 pb-2 flex-shrink-0">
+            {messages.length < 4 && (
+              <div className="flex flex-wrap gap-2 px-4 pb-3 flex-shrink-0">
                 {SUGGESTIONS.map((s, i) => (
                   <button
                     key={i}
                     onClick={() => send(s)}
-                    className="text-[10px] px-2 py-1 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"
+                    className="text-[11px] px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-400 active:bg-[#00f0ff]/20 transition-all font-medium"
                   >
                     {s}
                   </button>
@@ -221,34 +220,32 @@ export default function AIAssistant() {
               </div>
             )}
 
-            {/* Input */}
-            <div className="flex items-center gap-2 px-3 py-2.5 border-t border-white/10 flex-shrink-0">
-              <input
-                ref={inputRef}
-                className="flex-1 bg-transparent outline-none text-[11px] text-gray-200 placeholder-gray-600"
-                style={{ fontFamily: 'var(--font-sans)' }}
-                placeholder="Ask anything about Purbashis…"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && send(input)}
-                autoComplete="off"
-              />
-              <button
-                onClick={() => send(input)}
-                disabled={!input.trim()}
-                className="p-1.5 rounded-lg transition-all disabled:opacity-30"
-                style={{ background: input.trim() ? 'rgba(0,240,255,0.2)' : 'transparent', border: '1px solid rgba(0,240,255,0.2)' }}
-              >
-                <Send size={12} className="text-[#00f0ff]" />
-              </button>
+            {/* Input - Sticky on mobile */}
+            <div className={`p-4 border-t border-white/10 bg-[#060612] ${isMobile ? 'pb-8' : ''}`}>
+              <div className="flex items-center gap-2 bg-white/5 rounded-xl px-4 py-2 border border-white/5">
+                <input
+                  ref={inputRef}
+                  className="flex-1 bg-transparent outline-none text-[13px] text-gray-200"
+                  placeholder="Ask about Purbashis..."
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && send(input)}
+                />
+                <button
+                  onClick={() => send(input)}
+                  disabled={!input.trim()}
+                  className="p-2 rounded-lg transition-all disabled:opacity-30"
+                  style={{ background: input.trim() ? 'rgba(0,240,255,0.2)' : 'transparent' }}
+                >
+                  <Send size={16} className="text-[#00f0ff]" />
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Trigger button — large, pulsing, unmissable */}
       <div className="relative">
-        {/* Pulsing ring */}
         {!open && (
           <motion.div
             className="absolute inset-0 rounded-full"
@@ -258,31 +255,18 @@ export default function AIAssistant() {
           />
         )}
         <motion.button
-          onClick={() => { setOpen(o => !o); setTimeout(() => inputRef.current?.focus(), 200); }}
-          whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+          onClick={() => { setOpen(o => !o); if (!open) setTimeout(() => inputRef.current?.focus(), 200); }}
+          whileHover={isMobile ? {} : { scale: 1.1, rotate: [0, -5, 5, 0] }}
           whileTap={{ scale: 0.92 }}
-          className="w-16 h-16 rounded-full flex flex-col items-center justify-center gap-0.5 relative z-10 overflow-hidden"
+          className={`${isMobile ? 'w-14 h-14' : 'w-16 h-16'} rounded-full flex flex-col items-center justify-center relative z-10`}
           style={{
-            background: open
-              ? 'linear-gradient(135deg, #00f0ff, #b026ff)'
-              : 'linear-gradient(135deg, rgba(10, 10, 30, 0.8), rgba(20, 10, 40, 0.8))',
+            background: open ? 'linear-gradient(135deg, #00f0ff, #b026ff)' : '#0a0a1e',
             border: '2px solid rgba(0, 240, 255, 0.4)',
-            boxShadow: open
-              ? '0 0 50px rgba(0,240,255,0.7), 0 0 100px rgba(176,38,255,0.5), inset 0 0 20px rgba(255,255,255,0.3)'
-              : '0 0 30px rgba(0,240,255,0.3), 0 0 60px rgba(176,38,255,0.15), inset 0 0 10px rgba(0,240,255,0.1)',
-            backdropFilter: 'blur(12px)'
+            boxShadow: open ? '0 0 40px rgba(0,240,255,0.6)' : '0 0 20px rgba(176,38,255,0.2)'
           }}
         >
-          {!open && (
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-tr from-[#00f0ff]/10 to-[#b026ff]/10"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-          )}
-          <circle cx="8" cy="8" r="8" fill="red" />
-          <Sparkles size={ open ? 24 : 26 } className="text-white relative z-10" style={{ filter: 'drop-shadow(0 0 8px #fff)' }} />
-          {!open && <span className="text-[9px] font-black text-[#00f0ff] tracking-[0.2em] relative z-10" style={{ fontFamily: 'var(--font-mono)' }}>AI</span>}
+          <Sparkles size={isMobile ? 22 : 24} className="text-white relative z-10" />
+          {!open && !isMobile && <span className="text-[9px] font-black text-[#00f0ff] tracking-[0.2em] relative z-10 mt-0.5">AI</span>}
         </motion.button>
       </div>
     </div>
