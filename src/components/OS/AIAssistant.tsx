@@ -40,7 +40,7 @@ const KB: { patterns: RegExp[]; answer: string }[] = [
   },
   {
     patterns: [/\b(educati|degree|study|university|college|bachelor|btech)\b/i],
-    answer: `Purbashis holds a **B.Tech in Computer Science & Engineering** with specialisation in AI & ML systems. Key coursework includes Algorithms, Machine Learning, Deep Learning, Distributed Systems, and Database Management.`,
+    answer: `Purbashis holds a **MCA in Computer Science & Engineering** with specialisation in AI & ML systems. Key coursework includes Algorithms, Machine Learning, Deep Learning, Distributed Systems, and Database Management.`,
   },
   {
     patterns: [/\b(aws|cloud|deploy|docker|kubernetes|k8s|devops|ci.?cd)\b/i],
@@ -123,16 +123,16 @@ export default function AIAssistant() {
             exit={isMobile ? { opacity: 0, y: 100 } : { opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
             className={`${isMobile ? 'fixed inset-0 rounded-none' : 'w-80 rounded-2xl'} overflow-hidden flex flex-col border border-white/10 relative`}
-            style={{ 
-              maxHeight: isMobile ? '100%' : 520, 
-              background: isMobile ? '#06060e' : 'rgba(6, 6, 14, 0.75)', 
+            style={{
+              maxHeight: isMobile ? '100%' : 520,
+              background: isMobile ? '#06060e' : 'rgba(6, 6, 14, 0.75)',
               backdropFilter: isMobile ? 'none' : 'blur(32px)',
-              boxShadow: isMobile ? 'none' : '0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,240,255,0.03)' 
+              boxShadow: isMobile ? 'none' : '0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,240,255,0.03)'
             }}
           >
             {/* Neural Web Background - Hidden on mobile for performance */}
             {!isMobile && (
-              <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ 
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300f0ff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
               }} />
             )}
@@ -141,7 +141,7 @@ export default function AIAssistant() {
             <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 flex-shrink-0 relative z-10"
               style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.12), rgba(176,38,255,0.12))' }}>
               <div className="flex items-center gap-2">
-                <motion.div 
+                <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
                   className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00f0ff]/30 to-[#b026ff]/30 border border-[#00f0ff]/40 flex items-center justify-center">
@@ -163,10 +163,10 @@ export default function AIAssistant() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((m, i) => (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  key={i} 
+                  key={i}
                   className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'} relative z-10`}
                 >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === 'ai' ? 'bg-[#00f0ff]/20 border border-[#00f0ff]/30' : 'bg-[#b026ff]/20 border border-[#b026ff]/40'}`}>
@@ -180,7 +180,7 @@ export default function AIAssistant() {
                     }
                   >
                     {!isMobile && m.role === 'ai' && (
-                      <motion.div 
+                      <motion.div
                         initial={{ x: '-100%' }}
                         animate={{ x: '200%' }}
                         transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3, ease: 'linear' }}

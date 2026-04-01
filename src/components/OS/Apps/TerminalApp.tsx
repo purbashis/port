@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 type Line = { type: 'system' | 'input' | 'output' | 'error' | 'success'; text: string };
 
@@ -18,7 +18,7 @@ const COMMANDS: Record<string, { lines: string[]; type?: 'output' | 'error' | 's
       "│  contact     │  Display contact details             │",
       "│  github      │  Link to GitHub profile              │",
       "│  ai-stack    │  Show AI/ML toolchain                │",
-      "│  rag         │  Explain RAG architecture            │",
+      "│  agentic     │  Show Agentic AI & RAG workflows     │",
       "│  status      │  System diagnostics                  │",
       "│  whoami      │  Identity module                     │",
       "│  clear       │  Clear terminal                      │",
@@ -74,26 +74,26 @@ const COMMANDS: Record<string, { lines: string[]; type?: 'output' | 'error' | 's
       "      Impact: Domain-specific LLM adaptation for clients",
       "      Status: Active",
       "",
-      "  Run 'rag' for a deep-dive into the RAG architecture.",
+      "  Run 'agentic' for a deep-dive into the AI architecture.",
     ],
   },
-  rag: {
+  agentic: {
     lines: [
-      "── RAG ARCHITECTURE ─────────────────────────────────────",
+      "── AGENTIC AI & RAG ARCHITECTURE ────────────────────────",
       "",
-      "  Documents                                              ",
-      "    ↓  [chunked into semantic passages — 512 tokens]    ",
-      "  Embeddings  (sentence-transformers / OpenAI Ada-002)  ",
-      "    ↓  [L2 normalised, projected to 768-dim space]      ",
-      "  Vector DB   (FAISS index + PostgreSQL BM25 fallback)  ",
-      "    ↓  [hybrid retrieval: α·semantic + (1−α)·BM25]     ",
-      "  Retriever   (top-k=5 passages, MMR re-ranking)        ",
-      "    ↓  [context window packed, citations injected]      ",
-      "  LLM         (GPT-4 / LLaMA-3 with system prompt)     ",
-      "    ↓  [grounded generation, no hallucination zone]     ",
-      "  Answer      (cited, source-attributed response)       ",
+      "  Multi-Agent Workflows  (LangGraph / AutoGen)           ",
+      "    ↓  [Sequential, Parallel & Conditional Routing]     ",
+      "  Reasoning Engine       (ReAct / Plan-and-Solve)        ",
+      "    ↓  [Tool calling, State management, Execution]      ",
+      "  Memory & Context       (Vector DBs + SQLite/Postgres)  ",
+      "    ↓  [Episodic & Semantic memory, Checkpointing]      ",
+      "  Hybrid Retrieval       (FAISS Dense + BM25 Sparse)     ",
+      "    ↓  [High-precision Retrieval Augmented Generation]  ",
+      "  LLM Foundation         (GPT-4 / LLaMA-3 / Mistral)    ",
+      "    ↓  [Orchestrating agent collaboration]              ",
+      "  Output                 (Autonomous task completion)   ",
       "",
-      "  Metrics : Latency <1.2s | Hallucination ↓35% | P@5: 0.91",
+      "  Metrics : Latency <1.2s | Agent Success: 94%",
     ],
   },
   skills: {
@@ -153,7 +153,7 @@ const COMMANDS: Record<string, { lines: string[]; type?: 'output' | 'error' | 's
     lines: [
       "── EDUCATION ────────────────────────────────────────────",
       "",
-      "  B.Tech — Computer Science & Engineering",
+      "  MCA — Computer Science & Engineering",
       "  Specialisation: AI & Machine Learning systems",
       "",
       "  Key coursework:",
@@ -255,7 +255,7 @@ export default function TerminalApp() {
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter')       { run(input); setInput(''); }
+    if (e.key === 'Enter') { run(input); setInput(''); }
     else if (e.key === 'ArrowUp') {
       const newIdx = Math.min(histIdx + 1, history.length - 1);
       setHistIdx(newIdx);
@@ -269,11 +269,11 @@ export default function TerminalApp() {
 
   const lineColor = (type: Line['type']) => {
     switch (type) {
-      case 'input':   return '#00ff41';
-      case 'system':  return 'rgba(0,255,65,0.4)';
+      case 'input': return '#00ff41';
+      case 'system': return 'rgba(0,255,65,0.4)';
       case 'success': return '#00ff41';
-      case 'error':   return '#ff4444';
-      case 'output':  return 'rgba(0,255,65,0.75)';
+      case 'error': return '#ff4444';
+      case 'output': return 'rgba(0,255,65,0.75)';
     }
   };
 
@@ -300,7 +300,7 @@ export default function TerminalApp() {
               fontFamily: 'var(--font-mono)',
               color: lineColor(l.type),
               textShadow: l.type === 'success' ? '0 0 8px #00ff41' :
-                          l.type === 'input'   ? '0 0 5px #00ff41' : 'none',
+                l.type === 'input' ? '0 0 5px #00ff41' : 'none',
               fontWeight: l.type === 'input' || l.type === 'system' ? 600 : 400,
             }}
           >

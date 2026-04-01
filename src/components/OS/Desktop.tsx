@@ -54,7 +54,7 @@ const APPS: AppDef[] = [
     defaultPos: { x: 370, y: 50 }, component: ProjectsApp,
   },
   {
-    id: 'ai', label: 'AI Systems', sublabel: 'RAG',
+    id: 'ai', label: 'AI Systems', sublabel: 'RAG·LangGraph·ML',
     icon: BrainCircuit,
     color: '#b026ff', glow: 'rgba(176,38,255,0.55)', gradient: 'linear-gradient(135deg,#b026ff30,#b026ff08)',
     defaultPos: { x: 630, y: 50 }, component: AISystemsApp,

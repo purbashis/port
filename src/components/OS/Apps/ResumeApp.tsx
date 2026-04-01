@@ -1,7 +1,6 @@
 "use client";
 
-import React from 'react';
-import { FileText, Download, ExternalLink } from 'lucide-react';
+import { Download, ExternalLink, FileText } from 'lucide-react';
 
 const SECTIONS = [
   {
@@ -16,7 +15,7 @@ const SECTIONS = [
   },
   {
     heading: "Education",
-    content: "B.Tech – Computer Science & Engineering",
+    content: "MCA – Computer Science & Engineering",
     color: "#00f0ff",
   },
   {
