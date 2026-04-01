@@ -19,8 +19,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Purbashis Behera — AI Engineer | Purbashis OS v1.0",
-    description: "Futuristic AI OS portfolio for Purbashis Behera — Python, LLMs, RAG, Distributed AI Systems",
+    title: "Purbashis Behera — AI Engineer | OS v1.0",
+    description: " Portfolio of Purbashis Behera | OS v1.0",
 };
 
 export default function RootLayout({

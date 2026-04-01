@@ -41,6 +41,7 @@ export default function Window({
         bottom: isMobile ? 0 : undefined,
         width: isMobile ? '100%' : undefined,
         height: isMobile ? '100%' : undefined,
+        maxHeight: isMobile ? '100%' : 'calc(100vh - 120px)',
         boxShadow: isMobile ? 'none' : `0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px ${accentColor}20, 0 0 40px ${accentColor}10`,
       }}
       className={isMobile ? "flex flex-col bg-[#04040a]" : "w-[700px] max-w-[calc(100vw-130px)] rounded-2xl overflow-hidden flex flex-col"}
