@@ -291,9 +291,9 @@ function LanggraphTab() {
                       {node.type === 'conditional' && (
                         <div>
                           <div className="text-gray-500">Routing logic:</div>
-                          <div>  if confidence &gt; 0.8 → "respond"</div>
-                          <div>  if needs_more_context → "retry"</div>
-                          <div>  else → "escalate"</div>
+                          <div>  if confidence &gt; 0.8 → &quot;respond&quot;</div>
+                          <div>  if needs_more_context → &quot;retry&quot;</div>
+                          <div>  else → &quot;escalate&quot;</div>
                         </div>
                       )}
                       {node.type === 'state' && (
